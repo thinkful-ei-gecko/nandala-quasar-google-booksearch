@@ -1,23 +1,22 @@
 import React from 'react';
 
-class BookItem extends React.Component {
+function BookItem(props) {
 
-checkForSale(bookDetails) {
-  const saleability = bookDetails.saleInfo.saleability;
-  return saleability === 'FOR_SALE' 
-    ? `${bookDetails.saleInfo.listPrice.amount} ${bookDetails.saleInfo.listPrice.currencyCode}`
-    : 'Book is not for sale';
-}
+  function checkForSale(bookDetails) {
+    const saleability = bookDetails.saleInfo.saleability;
+    return saleability === 'FOR_SALE' 
+      ? `${bookDetails.saleInfo.listPrice.amount} ${bookDetails.saleInfo.listPrice.currencyCode}`
+      : 'Book is not for sale';
+  }
 
-render(){
-  const bookDetails = this.props.bookDetails;
+  const bookDetails = props.bookDetails;
   const bookTitle = bookDetails.volumeInfo.title;
   const bookAuthors = bookDetails.volumeInfo.authors;
   const bookDescription = bookDetails.volumeInfo.description;
+  const saleHeading = checkForSale(bookDetails);
 
   const imgSrc = bookDetails.volumeInfo.imageLinks.thumbnail;
 
-  const saleHeading = this.checkForSale(bookDetails);
   return(
     <li>
       <h2>{bookTitle}</h2>
@@ -27,7 +26,7 @@ render(){
       <p>{bookDescription}</p>
     </li>
   )
-}
+
 }
 
 export default BookItem;

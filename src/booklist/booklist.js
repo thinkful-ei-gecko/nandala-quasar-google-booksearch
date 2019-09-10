@@ -1,11 +1,12 @@
 import React from 'react';
 import BookItem from './bookitem';
 
-class BookList extends React.Component {
-render(){
+function BookList(props) {
 
-  const bookListItem = this.props.bookList.map((bookItem) => {
-    return <BookItem bookDetails={bookItem}/>
+  const bookListItem = props.bookList.map((bookItem) => {
+    return <BookItem 
+              bookDetails={bookItem}
+              key={bookItem.id}/>
   });
 
   return(
@@ -15,7 +16,7 @@ render(){
       </ol>
     </section>
   )
-}
+
 }
 
 export default BookList;

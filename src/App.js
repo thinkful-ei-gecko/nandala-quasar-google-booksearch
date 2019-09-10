@@ -8,7 +8,8 @@ class App extends React.Component {
     bookList:[],
     printType:"All",
     filterType:"All",
-    searchTitle:""
+    searchTitle:"",
+    loading: false
   }
 
   fetchBookList() {
@@ -30,8 +31,10 @@ class App extends React.Component {
     )
 
     const url = `https://www.googleapis.com/books/v1/volumes?${queryString}`;
-    
     console.log(url);
+
+    this.setState({ loading: true });
+
     fetch(url)
       .then( (response) => {
         if(response.ok){
@@ -41,22 +44,29 @@ class App extends React.Component {
       })
       .then(
         (json) => {
+          console.log(json);
           // console.log(json.items)
+
+          // if it doesn't find anything, server will still send ok response
+          // except response doesn't contain items array
+          // instead it will return object with key totalItems: 0
+          if (json.totalItems === 0) {
+            throw new Error('No items found matching search parameters');
+          }
+
           const bookList = json.items.map((bookItem) => {
              return { 
                volumeInfo: bookItem.volumeInfo, 
-               saleInfo: bookItem.saleInfo
+               saleInfo: bookItem.saleInfo,
+               id: bookItem.id
               }
           });
-
           // console.log(bookListArray);
-          this.setState({bookList,error:null});
+          this.setState({bookList,error:null, loading: false});
         }
       )
-      .catch(error => {
-        this.setState({
-        error: error.message
-        });
+      .catch(err => {
+        this.setState({error: `${err}`, loading: false});
       }) 
     // console.log(this.state.bookList);
   }
@@ -86,19 +96,24 @@ class App extends React.Component {
   }
 
   render(){
+
+    const loading = this.state.loading 
+          ? <div className="loading">retrieving results...</div>
+          : "";
+
     const error = this.state.error
           ? <div className="error">{this.state.error}</div>
           : "";
+
     return (
       <main className='App'>
-
         <BookHeader 
           handleAdd={searchTitle => this.handleAdd(searchTitle)} 
           getFilter={bookType => this.handleBookFilter(bookType)}
           getPrint={printType => this.handlePrintFilter(printType)}/>
           {error}
+          {loading}
         <BookList bookList={this.state.bookList}/>
-        
       </main>
     );
   }
