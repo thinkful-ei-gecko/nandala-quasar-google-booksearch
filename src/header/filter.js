@@ -6,8 +6,8 @@ class Filter extends React.Component {
   render() {
     return (
       <section>
-        <FilterPrintType />
-        <FilterBookType />
+        <FilterPrintType  />
+        <FilterBookType getFilter={this.props.getFilter} />
       </section>
     );
   }

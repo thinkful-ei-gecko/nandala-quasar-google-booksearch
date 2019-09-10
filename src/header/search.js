@@ -15,26 +15,8 @@ class Search extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const searchTitle = this.state.search;
-    const url = `https://www.googleapis.com/books/v1/volumes?q={${searchTitle}}`;
-
-    fetch(url)
-      .then( (response) => {
-        return response.json()
-      })
-      .then(
-        (json) => {
-          // console.log(json.items)
-          const bookListArray = json.items.map((bookItem) => {
-             return { 
-               volumeInfo: bookItem.volumeInfo, 
-               saleInfo: bookItem.saleInfo
-              }
-          });
-          // console.log(bookListArray);
-          this.props.handleAdd(bookListArray);
-        }
-      )
-  }
+     this.props.handleAdd(searchTitle);
+   }
 
   render() {
     return (

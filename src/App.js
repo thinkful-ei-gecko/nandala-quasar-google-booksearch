@@ -7,11 +7,60 @@ class App extends React.Component {
   state={
     bookList:[],
     printType:"All",
-    filterType:"All"
+    filterType:"All",
+    bookListFilter:[],
+    searchTitle:""
+  }
+  getFilters(bookType){
+    this.setState({filterType:bookType});
+    this.createFilteredList();
   }
 
-  createBookList(bookList) {
-    this.setState({ bookList });
+  createFilteredList(){
+    
+    const url = `https://www.googleapis.com/books/v1/volumes?q={${this.state.searchTitle}}&filter=${this.state.filterType}`;
+    console.log(url);
+    fetch(url)
+      .then( (response) => {
+        return response.json()
+      })
+      .then(
+        (json) => {
+           console.log(json.items)
+         /* const bookList = json.items.map((bookItem) => {
+             return { 
+               volumeInfo: bookItem.volumeInfo, 
+               saleInfo: bookItem.saleInfo
+              }
+          });
+          // console.log(bookListArray);
+          this.setState({bookList});*/
+        }
+      )
+  }
+
+  createBookList(searchTitle) {
+    
+    const url = `https://www.googleapis.com/books/v1/volumes?q={${searchTitle}}`;
+    fetch(url)
+      .then( (response) => {
+        return response.json()
+      })
+      .then(
+        (json) => {
+          // console.log(json.items)
+          const bookList = json.items.map((bookItem) => {
+             return { 
+               volumeInfo: bookItem.volumeInfo, 
+               saleInfo: bookItem.saleInfo
+              }
+          });
+          // console.log(bookListArray);
+          this.setState({bookList,searchTitle});
+          
+        }
+      )
+    
     // console.log(this.state.bookList);
   }
 
@@ -19,8 +68,10 @@ class App extends React.Component {
     return (
       <main className='App'>
 
-        <BookHeader handleAdd={bookList => this.createBookList(bookList)}/>
+        <BookHeader handleAdd={searchTitle => this.createBookList(searchTitle)} 
+        getFilter={bookType => this.getFilters(bookType)}/>
         <BookList bookList={this.state.bookList}/>
+        
       </main>
     );
   }

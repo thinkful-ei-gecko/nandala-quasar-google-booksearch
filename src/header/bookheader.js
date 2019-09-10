@@ -4,11 +4,12 @@ import Search from './search';
 
 class BookHeader extends React.Component {
 
+ 
   render() {
     return (
       <header>
         <h1>Google Book Search</h1>
-        <Filter />
+        <Filter getFilter={this.props.getFilter}/>
         <Search handleAdd={this.props.handleAdd}/>
       </header>
     );

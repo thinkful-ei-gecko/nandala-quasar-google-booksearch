@@ -1,12 +1,20 @@
 import React from 'react';
 
 class FilterBookType extends React.Component {
+  state={
+    bookType:"All"
+  }
+  handleBooktype(bookType){
+    this.setState({bookType});
+    this.props.getFilter(this.state.bookType)
+  }
+  
 
   render() {
     return(
       <div>
         <label>Book Type:
-          <select>
+          <select onChange={e =>this.handleBooktype(e.currentTarget.value)}>
             <option value="All" name="bookTypeOption">No Filter</option>
             <option value="free-ebooks" name="bookTypeOption">free-ebooks</option>
             <option value="paid-ebooks" name="bookTypeOption">paid-ebooks</option>
