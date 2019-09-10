@@ -5,10 +5,10 @@ import FilterBookType from './filters/filterbooktype';
 class Filter extends React.Component {
   render() {
     return (
-      <div>
+      <section>
         <FilterPrintType />
         <FilterBookType />
-      </div>
+      </section>
     );
   }
 }
