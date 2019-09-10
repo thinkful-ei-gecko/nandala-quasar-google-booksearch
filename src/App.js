@@ -34,7 +34,10 @@ class App extends React.Component {
     console.log(url);
     fetch(url)
       .then( (response) => {
-        return response.json()
+        if(response.ok){
+          return response.json()
+        }
+        throw new Error(response.statusText)
       })
       .then(
         (json) => {
@@ -45,10 +48,16 @@ class App extends React.Component {
                saleInfo: bookItem.saleInfo
               }
           });
+
           // console.log(bookListArray);
-          this.setState({bookList});
+          this.setState({bookList,error:null});
         }
       )
+      .catch(error => {
+        this.setState({
+        error: error.message
+        });
+      }) 
     // console.log(this.state.bookList);
   }
 
@@ -68,13 +77,26 @@ class App extends React.Component {
     });
   }
 
+  handlePrintFilter(printType){
+    this.setState({
+      printType
+    }, () => {
+      this.fetchBookList(printType);
+    })
+  }
+
   render(){
+    const error = this.state.error
+          ? <div className="error">{this.state.error}</div>
+          : "";
     return (
       <main className='App'>
 
         <BookHeader 
           handleAdd={searchTitle => this.handleAdd(searchTitle)} 
-          getFilter={bookType => this.handleBookFilter(bookType)}/>
+          getFilter={bookType => this.handleBookFilter(bookType)}
+          getPrint={printType => this.handlePrintFilter(printType)}/>
+          {error}
         <BookList bookList={this.state.bookList}/>
         
       </main>

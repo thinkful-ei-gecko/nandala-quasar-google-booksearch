@@ -9,7 +9,7 @@ class BookHeader extends React.Component {
     return (
       <header>
         <h1>Google Book Search</h1>
-        <Filter getFilter={this.props.getFilter}/>
+        <Filter getFilter={this.props.getFilter} getPrint={this.props.getPrint}/>
         <Search handleAdd={this.props.handleAdd}/>
       </header>
     );
