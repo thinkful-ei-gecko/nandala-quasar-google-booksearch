@@ -17,8 +17,6 @@ render(){
 
   const imgSrc = bookDetails.volumeInfo.imageLinks.thumbnail;
 
-  let saleInfo = {};
-
   const saleHeading = this.checkForSale(bookDetails);
   return(
     <li>

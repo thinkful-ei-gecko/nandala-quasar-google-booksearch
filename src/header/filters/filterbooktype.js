@@ -1,14 +1,18 @@
 import React from 'react';
 
 class FilterBookType extends React.Component {
+
   state={
     bookType:"All"
   }
+
   handleBooktype(bookType){
-    this.setState({bookType});
+    this.setState({
+      bookType
+    }, () => {
     this.props.getFilter(this.state.bookType)
+    });
   }
-  
 
   render() {
     return(

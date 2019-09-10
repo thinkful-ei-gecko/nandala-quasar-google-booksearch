@@ -14,19 +14,20 @@ class Search extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const searchTitle = this.state.search;
-     this.props.handleAdd(searchTitle);
+    this.props.handleAdd(this.state.search);
    }
 
   render() {
     return (
       <form onSubmit={e => this.handleSubmit(e)}>
         <label>Search:
-          <input type="text" 
-          placeholder="Lord of the Rings" 
-          required 
-          value={this.state.search}
-          onChange={e => this.searchChanged(e.target.value)}></input>
+          <input 
+            type="text" 
+            placeholder="Lord of the Rings" 
+            required 
+            value={this.state.search}
+            onChange={e => this.searchChanged(e.target.value)}>
+          </input>
           <button type="submit" value="Search"></button>
         </label>
       </form>
